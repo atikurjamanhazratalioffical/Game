@@ -1,0 +1,341 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --neon-yellow: #f5e642;
+  --neon-red: #ff3c3c;
+  --neon-blue: #3cf0ff;
+  --neon-purple: #b44aff;
+  --asphalt-dark: #0d0d1a;
+  --panel-bg: rgba(10, 10, 26, 0.95);
+  --border: rgba(245, 230, 66, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--asphalt-dark);
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  overflow: hidden;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── HEADER ── */
+#header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px 4px;
+  background: linear-gradient(180deg, #000 0%, transparent 100%);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+#logo {
+  font-family: 'Russo One', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 4px;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 12px #f5e64280;
+}
+
+#timer-display {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 2rem;
+  color: var(--neon-blue);
+  text-shadow: 0 0 10px var(--neon-blue);
+  min-width: 55px;
+  text-align: center;
+}
+
+#settings-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--neon-yellow);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.6rem;
+  padding: 5px 10px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.2s;
+}
+#settings-btn:hover {
+  background: rgba(245, 230, 66, 0.1);
+}
+
+/* ── CANVAS ── */
+#game-canvas {
+  width: 100%;
+  flex: 1;
+  display: block;
+  cursor: pointer;
+}
+
+/* ── HUD ── */
+#hud {
+  width: 100%;
+  padding: 4px 14px 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+#power-label {
+  font-size: 0.5rem;
+  letter-spacing: 3px;
+  color: var(--neon-yellow);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#power-track {
+  flex: 1;
+  height: 11px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+#power-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff3c3c, #f5e642, #b44aff);
+  border-radius: 2px;
+  transition: width 0.05s linear;
+  box-shadow: 0 0 8px #f5e64260;
+}
+
+#speedo-wrap {
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+}
+
+#speedo-canvas {
+  width: 88px;
+  height: 88px;
+}
+
+/* ── PRESS BUTTON ── */
+#press-btn {
+  width: calc(100% - 28px);
+  margin: 2px 14px 6px;
+  height: 58px;
+  background: linear-gradient(135deg, #ff3c3c 0%, #c40000 100%);
+  border: none;
+  border-radius: 4px;
+  font-family: 'Russo One', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 8px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px #ff3c3c60, inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+  transition: transform 0.05s, box-shadow 0.05s;
+}
+#press-btn:active,
+#press-btn.tapped {
+  transform: scaleY(0.95);
+  box-shadow: 0 2px 8px #ff3c3c60;
+}
+#press-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+#press-btn:disabled {
+  background: linear-gradient(135deg, #444 0%, #222 100%);
+  box-shadow: none;
+  cursor: default;
+}
+
+/* ── TAPS COUNTER ── */
+#taps-counter {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: center;
+  padding-bottom: 4px;
+  letter-spacing: 2px;
+  flex-shrink: 0;
+}
+
+#bottom-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+/* ── OVERLAYS ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  padding: 28px 24px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(245, 230, 66, 0.1);
+}
+
+.panel h2 {
+  font-family: 'Russo One', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 5px;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 14px #f5e64280;
+  margin-bottom: 20px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.setting-row label {
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.duration-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.dur-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.6rem;
+  padding: 6px 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+.dur-btn.active,
+.dur-btn:hover {
+  border-color: var(--neon-yellow);
+  color: var(--neon-yellow);
+  background: rgba(245, 230, 66, 0.08);
+}
+
+.action-btn {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, var(--neon-yellow) 0%, #c8b800 100%);
+  border: none;
+  font-family: 'Russo One', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 5px;
+  color: #000;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: opacity 0.2s;
+}
+.action-btn:hover {
+  opacity: 0.9;
+}
+
+/* ── SCORE POPUP ── */
+#score-popup .panel h2 {
+  color: var(--neon-blue);
+  text-shadow: 0 0 14px var(--neon-blue);
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.score-cell {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 6px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.score-cell .val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.5rem;
+  color: var(--neon-yellow);
+  display: block;
+  margin-bottom: 3px;
+}
+.score-cell .lbl {
+  font-size: 0.48rem;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+#rating-badge {
+  font-family: 'Russo One', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 4px;
+  margin: 6px 0;
+  display: block;
+}
+
+/* ── START SCREEN ── */
+#start-screen .panel h2 {
+  font-size: 1.8rem;
+}
+#start-screen .sub {
+  font-size: 0.55rem;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 18px;
+}
+#start-screen .instructions {
+  font-size: 0.55rem;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+  text-align: left;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+/* ── TAP FLASH ── */
+#tap-flash {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 60, 60, 0.07);
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.05s;
+}
+#tap-flash.active {
+  opacity: 1;
+}

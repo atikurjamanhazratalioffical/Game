@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>TAP RACER</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div id="header">
+    <div id="logo">TAP RACER</div>
+    <div id="timer-display">--</div>
+    <button id="settings-btn">⚙ SETTINGS</button>
+  </div>
+
+  <!-- GAME CANVAS -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD: Power Bar + Speedometer -->
+  <div id="hud">
+    <div id="power-label">POWER</div>
+    <div id="power-track">
+      <div id="power-fill"></div>
+    </div>
+    <div id="speedo-wrap">
+      <canvas id="speedo-canvas" width="176" height="176"></canvas>
+    </div>
+  </div>
+
+  <!-- PRESS BUTTON -->
+  <div id="bottom-row">
+    <button id="press-btn" disabled>PRESS</button>
+    <div id="taps-counter">TAPS: <span id="taps-val">0</span></div>
+  </div>
+
+  <!-- TAP FLASH OVERLAY -->
+  <div id="tap-flash"></div>
+
+  <!-- START SCREEN -->
+  <div class="overlay" id="start-screen">
+    <div class="panel">
+      <h2>TAP RACER</h2>
+      <p class="sub">IDLE CLICK RACING</p>
+      <div class="setting-row">
+        <label>DURATION</label>
+        <div class="duration-btns">
+          <button class="dur-btn" data-val="10">10s</button>
+          <button class="dur-btn active" data-val="30">30s</button>
+          <button class="dur-btn" data-val="60">60s</button>
+        </div>
+      </div>
+      <div class="instructions">
+        ▸ TAP THE BUTTON TO ACCELERATE<br>
+        ▸ POWER DECAYS IF YOU STOP TAPPING<br>
+        ▸ SMOKE BURSTS FROM REAR WHEEL ON TAP<br>
+        ▸ MAX TAPS = MAX SPEED
+      </div>
+      <button class="action-btn" id="start-btn">START ENGINE</button>
+    </div>
+  </div>
+
+  <!-- SETTINGS SCREEN -->
+  <div class="overlay" id="settings-screen" style="display:none">
+    <div class="panel">
+      <h2>SETTINGS</h2>
+      <div class="setting-row">
+        <label>DURATION</label>
+        <div class="duration-btns">
+          <button class="dur-btn" data-val="10">10s</button>
+          <button class="dur-btn active" data-val="30">30s</button>
+          <button class="dur-btn" data-val="60">60s</button>
+        </div>
+      </div>
+      <button class="action-btn" id="settings-close-btn">APPLY & RESUME</button>
+    </div>
+  </div>
+
+  <!-- SCORE POPUP -->
+  <div class="overlay" id="score-popup" style="display:none">
+    <div class="panel">
+      <h2>FINISH!</h2>
+      <span id="rating-badge"></span>
+      <div class="score-grid">
+        <div class="score-cell">
+          <span class="val" id="final-taps">0</span>
+          <span class="lbl">TOTAL TAPS</span>
+        </div>
+        <div class="score-cell">
+          <span class="val" id="final-speed">0</span>
+          <span class="lbl">MAX KM/H</span>
+        </div>
+        <div class="score-cell">
+          <span class="val" id="final-score">0</span>
+          <span class="lbl">FINAL SCORE</span>
+        </div>
+        <div class="score-cell">
+          <span class="val" id="final-tps">0</span>
+          <span class="lbl">BEST TPS</span>
+        </div>
+      </div>
+      <button class="action-btn" id="restart-btn">RACE AGAIN</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
